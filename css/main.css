@@ -1,0 +1,13 @@
+body{
+	background-color:#81F7D8;
+	font-family: 'Rajdhani', sans-serif;
+}
+
+#map {
+    height: 450px;
+    width: 100%;
+   }
+
+   h2{
+   	color:#0B615E;
+   }
