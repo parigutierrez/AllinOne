@@ -111,7 +111,6 @@ function mostrarMapa(coordenadas) {
 }
 
 function cambiarUbicacion() {
-alert("hola");
   var latitud = $(this).data("lat");
   var longitud = $(this).data("lng");
 
