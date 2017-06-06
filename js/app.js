@@ -39,25 +39,25 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 		"nombre": "ChilaKillers",
 		"direccion": "Av. Revolución, Tacubaya, 11870 Ciudad de México, CDMX",
 		"lat": "19.4068567",
-		"lang": "-99.18452130000003"
+		"lng": "-99.18452130000003"
 	},
 	{
 		"nombre": "Contamar",
 		"direccion": "Calle Durango 200, Roma, Roma Nte.,06700 Cuauhtémoc, CDMX",
 		"lat": "19.4195252",
-		"lang":"-99.16712819999998"
+		"lng":"-99.16712819999998"
 	},
 	{
 		"nombre": "Mercado Roma",
 		"direccion": "Calle Querétaro 225, Roma Nte.,06700 Ciudad de México, CDMX",
 		"lat": "19.4195252",
-		"lang":"-99.16712819999998"
+		"lng":"-99.16712819999998"
 	},
 	{
 		"nombre": "Chili's",
 		"direccion": "Londres 127, Cuauhtémoc, Juárez,06600 Ciudad de México, CDMX",
 		"lat": "19.4255196",
-		"lang":"-99.16456690000001"
+		"lng":"-99.16456690000001"
 	},
 
 ];
@@ -65,19 +65,17 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 //var busqueda = document.getElementById("search-form");
 
 //busqueda.submit(filtrarRestaurantes);
-var plantillaContacto = '<article class="row contact">' +
-        '<div class="card-panel hoverable grey lighten-5 z-depth-1">' +
-          '<div class="row valign-wrapper">' +
-            '<div class="col s3">' +
-            '<div class="col s9">' +
-            	'<h5 class="name">__nombre__</h5>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-	'</article>';
+var plantillaContacto = 
+
+	'<ul id="restaurantes" data-lat="__latitud__" data-lng="__longitud__" class="collection ubicaciones">'+
+    '<li class="collection-item avatar">'+
+      '<img src="img/restaurant.png" alt="" class="circle">'+
+      '<span class="title">__nombre__</span>'+
+      '<p>__direccion__</p>';
 
 var cargarPagina = function () {
 	$("#search-form").submit(filtrarRestaurantes);
+	$(document).on("click",".ubicaciones",cambiarUbicacion);
 };
 
 var filtrarRestaurantes = function (e) {
@@ -92,10 +90,40 @@ var filtrarRestaurantes = function (e) {
 var mostrarRestaurantes = function (restaurante) {
 	var plantillaFinal = "";
 	restaurante.forEach(function (restaurante) {
-		plantillaFinal += plantillaContacto.replace("__nombre__", restaurante.nombre)
+		plantillaFinal += plantillaContacto.replace("__nombre__", restaurante.nombre).replace("__latitud__",restaurante.lat).replace("__longitud__",restaurante.lng).replace("__direccion__",restaurante.direccion)
 		
 	});
 	$("#restaurantes").html(plantillaFinal);
 };
+
+
+
+
+function mostrarMapa(coordenadas) {
+  var map = new google.maps.Map($('.map')[0], {
+    zoom: 8,
+    center: coordenadas
+  });
+  var marker = new google.maps.Marker({
+    position: coordenadas,
+    map: map
+  });
+}
+
+function cambiarUbicacion() {
+alert("hola");
+  var latitud = $(this).data("lat");
+  var longitud = $(this).data("lng");
+
+  var coordenadas = {
+    lat: latitud,
+    lng: longitud
+  };
+
+  console.log(coordenadas);
+  mostrarMapa(coordenadas);
+}
+
+
 
 $(document).ready(cargarPagina);
